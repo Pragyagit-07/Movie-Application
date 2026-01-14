@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/movieController");
-const { protect, adminOnly } = require("../middleware/auth");
+const { protect, adminOnly } = require("../middleware/authMiddleware");
 
 router.get("/", controller.getMovies);
 router.get("/search", controller.searchMovies);
