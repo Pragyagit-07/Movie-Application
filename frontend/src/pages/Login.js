@@ -1,58 +1,64 @@
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+} from "@mui/material";
 import { useState, useContext } from "react";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
-import API from "../services/api";
+import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const submit = async () => {
     try {
-      const res = await API.post("/auth/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
       login(res.data.token, res.data.role);
       navigate("/");
     } catch {
-      alert("Invalid login credentials");
+      setError("Invalid credentials");
     }
   };
 
   return (
     <Container maxWidth="sm">
-      <Box mt={5}>
-        <Typography variant="h4" align="center">
-          Login
-        </Typography>
+      <Typography variant="h4" sx={{ my: 3 }}>
+        Login
+      </Typography>
 
-        <TextField
-          label="Email"
-          fullWidth
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      {error && <Alert severity="error">{error}</Alert>}
 
-        <TextField
-          label="Password"
-          type="password"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <TextField
+        fullWidth
+        label="Email"
+        sx={{ my: 1 }}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{ mt: 2 }}
-          onClick={handleSubmit}
-        >
-          Login
-        </Button>
-      </Box>
+      <TextField
+        fullWidth
+        type="password"
+        label="Password"
+        sx={{ my: 1 }}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <Button
+        fullWidth
+        variant="contained"
+        sx={{ mt: 2 }}
+        onClick={submit}
+      >
+        Login
+      </Button>
     </Container>
   );
 };

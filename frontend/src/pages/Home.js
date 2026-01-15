@@ -1,35 +1,25 @@
-import { useEffect, useState } from "react";
-import API from "../services/api";
-import { Grid, Select, MenuItem } from "@mui/material";
-import MovieCard from "../components/MovieCard";
+import { Button, TextField, Container } from "@mui/material";
+import { useContext, useState } from "react";
+import api from "../api/axios";
+import { AuthContext } from "../context/AuthContext";
 
-const Home = () => {
-  const [movies, setMovies] = useState([]);
-  const [sortBy, setSortBy] = useState("");
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
 
-  useEffect(() => {
-    API.get(`/movies?sortBy=${sortBy}`).then(res => setMovies(res.data));
-  }, [sortBy]);
+  const submit = async () => {
+    const { data } = await api.post("/auth/login", { email, password });
+    login(data.token, data.role);
+  };
 
   return (
-    <>
-      <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-        <MenuItem value="">None</MenuItem>
-        <MenuItem value="title">Name</MenuItem>
-        <MenuItem value="rating">Rating</MenuItem>
-        <MenuItem value="releaseDate">Release Date</MenuItem>
-        <MenuItem value="duration">Duration</MenuItem>
-      </Select>
-
-      <Grid container spacing={2}>
-        {movies.map(movie => (
-          <Grid item xs={12} md={4} key={movie._id}>
-            <MovieCard movie={movie} />
-          </Grid>
-        ))}
-      </Grid>
-    </>
+    <Container>
+      <TextField fullWidth label="Email" onChange={e => setEmail(e.target.value)} />
+      <TextField fullWidth type="password" label="Password" onChange={e => setPassword(e.target.value)} />
+      <Button onClick={submit} variant="contained">Login</Button>
+    </Container>
   );
 };
 
-export default Home;
+export default Login;

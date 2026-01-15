@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 
 const movieSchema = new mongoose.Schema(
   {
-    title: String,
+    title: { type: String, required: true, index: true },
     description: String,
     rating: Number,
     releaseDate: Date,
-    duration: Number
+    duration: Number,
+    poster: String,
+    imdbId: String,
   },
   { timestamps: true }
 );

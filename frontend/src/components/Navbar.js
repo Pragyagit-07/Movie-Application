@@ -1,43 +1,22 @@
 import { AppBar, Toolbar, Button } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { userRole, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const { user, logout } = useContext(AuthContext);
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
-        <Button color="inherit" component={Link} to="/">
-          Home
-        </Button>
-
-        <Button color="inherit" component={Link} to="/search">
-          Search
-        </Button>
-
-        {userRole === "admin" && (
+        <Button color="inherit" component={Link} to="/">Movies</Button>
+        <Button color="inherit" component={Link} to="/search">Search</Button>
+        {user?.role === "admin" && (
           <Button color="inherit" component={Link} to="/admin/add">
             Add Movie
           </Button>
         )}
-
-        {!userRole ? (
-          <Button color="inherit" component={Link} to="/login">
-            Login
-          </Button>
-        ) : (
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
-        )}
+        {user && <Button color="inherit" onClick={logout}>Logout</Button>}
       </Toolbar>
     </AppBar>
   );

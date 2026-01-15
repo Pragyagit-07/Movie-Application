@@ -1,15 +1,11 @@
 import { Pagination as MuiPagination } from "@mui/material";
 
-const Pagination = ({ page, totalPages, onChange }) => {
-  return (
-    <MuiPagination
-      count={totalPages}
-      page={page}
-      onChange={(e, value) => onChange(value)}
-      color="primary"
-      sx={{ display: "flex", justifyContent: "center", mt: 3 }}
-    />
-  );
-};
+const Pagination = ({ page, totalPages, onChange }) => (
+  <MuiPagination
+    page={page}
+    count={totalPages}
+    onChange={(e, val) => onChange(val)}
+  />
+);
 
 export default Pagination;

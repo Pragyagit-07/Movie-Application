@@ -1,34 +1,44 @@
 const Movie = require("../models/Movie");
 
 exports.getMovies = async (req, res) => {
-  const { sortBy } = req.query;
+  const page = Number(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
 
-  let sortOptions = {};
-  if (sortBy) sortOptions[sortBy] = 1;
+  const movies = await Movie.find().skip(skip).limit(limit);
+  const total = await Movie.countDocuments();
 
-  const movies = await Movie.find().sort(sortOptions);
-  res.json(movies);
+  res.json({
+    movies,
+    totalPages: Math.ceil(total / limit),
+  });
 };
 
 exports.searchMovies = async (req, res) => {
-  const { q } = req.query;
+  const query = req.query.query;
   const movies = await Movie.find({
     $or: [
-      { title: { $regex: q, $options: "i" } },
-      { description: { $regex: q, $options: "i" } }
-    ]
+      { title: { $regex: query, $options: "i" } },
+      { description: { $regex: query, $options: "i" } },
+    ],
   });
+  res.json(movies);
+};
+
+exports.sortMovies = async (req, res) => {
+  const sortBy = req.query.by;
+  const movies = await Movie.find().sort({ [sortBy]: 1 });
   res.json(movies);
 };
 
 exports.addMovie = async (req, res) => {
   const movie = await Movie.create(req.body);
-  res.status(201).json(movie);
+  res.json(movie);
 };
 
 exports.updateMovie = async (req, res) => {
   const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
-    new: true
+    new: true,
   });
   res.json(movie);
 };

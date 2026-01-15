@@ -1,76 +1,93 @@
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Stack,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import API from "../services/api";
-import { TextField, Button, Container, Typography } from "@mui/material";
+import api from "../api/axios";
 
 const AdminEditMovie = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState({
+    title: "",
+    description: "",
+    rating: "",
+    duration: "",
+    releaseDate: "",
+  });
 
   useEffect(() => {
-    API.get("/movies").then((res) => {
-      const selected = res.data.find((m) => m._id === id);
-      setMovie(selected);
-    });
+    api.get(`/movies/${id}`).then((res) => setMovie(res.data));
   }, [id]);
 
   const updateMovie = async () => {
-    await API.put(`/movies/${id}`, movie);
+    await api.put(`/movies/${id}`, movie);
     alert("Movie updated");
     navigate("/");
   };
 
   const deleteMovie = async () => {
-    await API.delete(`/movies/${id}`);
-    alert("Movie deleted");
-    navigate("/");
+    if (window.confirm("Delete this movie?")) {
+      await api.delete(`/movies/${id}`);
+      navigate("/");
+    }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" align="center" mt={4}>
+    <Container>
+      <Typography variant="h4" sx={{ my: 2 }}>
         Edit Movie
       </Typography>
 
-      <TextField
-        label="Title"
-        fullWidth
-        margin="normal"
-        value={movie?.title || ""}
-        onChange={(e) => setMovie({ ...movie, title: e.target.value })}
-      />
+      <Stack spacing={2}>
+        <TextField
+          label="Title"
+          value={movie.title}
+          onChange={(e) => setMovie({ ...movie, title: e.target.value })}
+        />
 
-      <TextField
-        label="Description"
-        fullWidth
-        margin="normal"
-        value={movie?.description || ""}
-        onChange={(e) => setMovie({ ...movie, description: e.target.value })}
-      />
+        <TextField
+          label="Description"
+          value={movie.description}
+          onChange={(e) =>
+            setMovie({ ...movie, description: e.target.value })
+          }
+        />
 
-      <TextField
-        label="Rating"
-        type="number"
-        fullWidth
-        margin="normal"
-        value={movie?.rating || ""}
-        onChange={(e) => setMovie({ ...movie, rating: e.target.value })}
-      />
+        <TextField
+          label="Rating"
+          value={movie.rating}
+          onChange={(e) => setMovie({ ...movie, rating: e.target.value })}
+        />
 
-      <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={updateMovie}>
-        Update Movie
-      </Button>
+        <TextField
+          label="Duration (min)"
+          value={movie.duration}
+          onChange={(e) => setMovie({ ...movie, duration: e.target.value })}
+        />
 
-      <Button
-        variant="outlined"
-        color="error"
-        fullWidth
-        sx={{ mt: 2 }}
-        onClick={deleteMovie}
-      >
-        Delete Movie
-      </Button>
+        <TextField
+          label="Release Date"
+          type="date"
+          InputLabelProps={{ shrink: true }}
+          value={movie.releaseDate?.substring(0, 10)}
+          onChange={(e) =>
+            setMovie({ ...movie, releaseDate: e.target.value })
+          }
+        />
+
+        <Button variant="contained" onClick={updateMovie}>
+          Update Movie
+        </Button>
+
+        <Button variant="contained" color="error" onClick={deleteMovie}>
+          Delete Movie
+        </Button>
+      </Stack>
     </Container>
   );
 };

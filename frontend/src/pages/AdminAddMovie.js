@@ -1,22 +1,21 @@
+import { TextField, Button, Container } from "@mui/material";
 import { useState } from "react";
-import API from "../services/api";
-import { TextField, Button } from "@mui/material";
+import api from "../api/axios";
 
 const AdminAddMovie = () => {
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState({ title: "", rating: "" });
 
   const submit = async () => {
-    await API.post("/movies", movie);
-    alert("Movie added");
+    await api.post("/movies", movie);
+    alert("Movie Added");
   };
 
   return (
-    <>
+    <Container>
       <TextField label="Title" onChange={e => setMovie({ ...movie, title: e.target.value })} />
-      <TextField label="Description" onChange={e => setMovie({ ...movie, description: e.target.value })} />
-      <TextField label="Rating" type="number" onChange={e => setMovie({ ...movie, rating: e.target.value })} />
-      <Button onClick={submit}>Add Movie</Button>
-    </>
+      <TextField label="Rating" onChange={e => setMovie({ ...movie, rating: e.target.value })} />
+      <Button onClick={submit}>Add</Button>
+    </Container>
   );
 };
 
