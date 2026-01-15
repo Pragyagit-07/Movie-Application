@@ -1,4 +1,5 @@
-const Movie = require("../models/Movie");
+// const Movie = require("../models/Movie");
+import Movie from "../models/Movie";
 
 exports.getMovies = async (req, res) => {
   const page = Number(req.query.page) || 1;
