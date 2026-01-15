@@ -1,15 +1,20 @@
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
-// const Movie = require("../models/Movie");
-
+import axios from "axios";
 import Movie from "../models/Movie.js";
 
 const imdbQueue = async () => {
-  setTimeout(async () => {
-    console.log("IMDb queue started");
-    // Placeholder: IMDb scraping requires auth; explain in README
-  }, 3000);
+  const { data } = await axios.get("https://imdb-api.com/en/API/Top250Movies/YOUR_KEY");
+  for (const m of data.items) {
+    await Movie.updateOne(
+      { title: m.title },
+      {
+        title: m.title,
+        rating: m.imDbRating,
+        poster: m.image
+      },
+      { upsert: true }
+    );
+  }
+  console.log("IMDb queue completed");
 };
 
-// module.exports = imdbQueue;
 export default imdbQueue;

@@ -1,7 +1,6 @@
-// const Movie = require("../models/Movie");
-import Movie from "../models/Movie";
+import Movie from "../models/Movie.js";
 
-exports.getMovies = async (req, res) => {
+export const getMovies = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const limit = 10;
   const skip = (page - 1) * limit;
@@ -9,42 +8,37 @@ exports.getMovies = async (req, res) => {
   const movies = await Movie.find().skip(skip).limit(limit);
   const total = await Movie.countDocuments();
 
-  res.json({
-    movies,
-    totalPages: Math.ceil(total / limit),
-  });
+  res.json({ movies, totalPages: Math.ceil(total / limit) });
 };
 
-exports.searchMovies = async (req, res) => {
-  const query = req.query.query;
+export const searchMovies = async (req, res) => {
+  const q = req.query.query;
   const movies = await Movie.find({
     $or: [
-      { title: { $regex: query, $options: "i" } },
-      { description: { $regex: query, $options: "i" } },
-    ],
+      { title: { $regex: q, $options: "i" } },
+      { description: { $regex: q, $options: "i" } }
+    ]
   });
   res.json(movies);
 };
 
-exports.sortMovies = async (req, res) => {
-  const sortBy = req.query.by;
-  const movies = await Movie.find().sort({ [sortBy]: 1 });
+export const sortMovies = async (req, res) => {
+  const { by } = req.query;
+  const movies = await Movie.find().sort({ [by]: 1 });
   res.json(movies);
 };
 
-exports.addMovie = async (req, res) => {
+export const addMovie = async (req, res) => {
   const movie = await Movie.create(req.body);
   res.json(movie);
 };
 
-exports.updateMovie = async (req, res) => {
-  const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+export const updateMovie = async (req, res) => {
+  const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.json(movie);
 };
 
-exports.deleteMovie = async (req, res) => {
+export const deleteMovie = async (req, res) => {
   await Movie.findByIdAndDelete(req.params.id);
   res.json({ message: "Movie deleted" });
 };
