@@ -3,11 +3,17 @@ import { motion } from "framer-motion";
 
 const MovieCard = ({ movie }) => (
   <motion.div whileHover={{ scale: 1.05 }}>
-    <Card>
-      <CardMedia component="img" height="300" image={movie.poster} />
+    <Card sx={{ borderRadius: 4 }}>
+      <CardMedia
+        component="img"
+        height="300"
+        image={movie.poster}
+      />
       <CardContent>
         <Typography variant="h6">{movie.title}</Typography>
-        <Typography variant="body2">⭐ {movie.rating}</Typography>
+        <Typography variant="body2">
+          ⭐ {movie.rating}
+        </Typography>
       </CardContent>
     </Card>
   </motion.div>
