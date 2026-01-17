@@ -95,7 +95,7 @@ const seedMovies = async () => {
     await Movie.deleteMany();
     await Movie.insertMany(movies);
 
-    console.log("✅ REAL movies imported from TMDB");
+    console.log(" REAL movies imported from TMDB");
     process.exit();
   } catch (err) {
     console.error(err.message);

@@ -6,9 +6,11 @@ const Home = () => {
   const { movies } = useMovies();
 
   return (
-    <Container sx={{ mt: 5 }}>
+    // <Container sx={{ mt: 5 }}>
+    <Container maxWidth="xl" sx={{ mt: 5 }}>
+
       <Typography variant="h4" gutterBottom>
-        🎬 Top Movies
+        Top Movies
       </Typography>
       <Grid container spacing={3}>
         {movies.map((m) => (
