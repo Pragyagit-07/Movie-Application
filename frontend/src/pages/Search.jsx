@@ -111,7 +111,7 @@ const Search = () => {
 
       {!loading && movies.length === 0 && (
         <Typography sx={{ mt: 4, color: "gray" }}>
-          No movies found 😢
+          No movies found 
         </Typography>
       )}
 
