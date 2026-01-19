@@ -3,6 +3,7 @@ import protect from "../middleware/authMiddleware.js";
 import isAdmin from "../middleware/adminMiddleware.js";
 import {
   getMovies,
+  getMovieById,
   searchMovies,
   sortMovies,
   addMovie,
@@ -13,6 +14,8 @@ import {
 const router = express.Router();
 
 router.get("/", getMovies);
+router.get("/:id", getMovieById);   
+
 router.get("/search", searchMovies);
 router.get("/sorted", sortMovies);
 router.post("/", protect, isAdmin, addMovie);

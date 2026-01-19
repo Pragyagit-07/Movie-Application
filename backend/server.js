@@ -1,15 +1,25 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import movieRoutes from "./routes/movieRoutes.js";
 import imdbQueue from "./queue/imdbQueue.js";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+
 
 dotenv.config();
 
 const app = express();
+app.use(helmet());
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests, please try again later"
+});
+
+app.use(limiter);
 
 // Middleware
 app.use(cors());

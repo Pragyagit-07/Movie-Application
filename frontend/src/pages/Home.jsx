@@ -1,17 +1,32 @@
-// import { Grid, Container, Typography } from "@mui/material";
+// import { Grid, Container, Typography, Pagination, Stack, Box } from "@mui/material";
 // import { useMovies } from "../context/MovieContext";
 // import MovieCard from "../components/MovieCard";
 
+
+
 // const Home = () => {
-//   const { movies } = useMovies();
+//   const { movies, page, totalPages, setPage, loading } = useMovies();
 
 //   return (
-    
-//     <Container maxWidth="xl" sx={{ mt: 5 }}>
-
-//       <Typography variant="h4" gutterBottom>
-//         Top Movies
+//      <Container maxWidth="xl" sx={{ mt: 5 }}>
+//      <Typography variant="h4" gutterBottom>
+//         🎬 Top Movies
 //       </Typography>
+//       <Box sx={{ mb: 3 }}>
+//   <TextField
+//     select
+//     label="Sort By"
+//     SelectProps={{ native: true }}
+//     onChange={e => api.get(`/movies/sorted?by=${e.target.value}`).then(res => setMovies(res.data))}
+//   >
+//     <option value="title">Title</option>
+//     <option value="rating">Rating</option>
+//     <option value="releaseDate">Release Date</option>
+//     <option value="duration">Duration</option>
+//   </TextField>
+// </Box>
+
+
 //       <Grid container spacing={3}>
 //         {movies.map((m) => (
 //           <Grid item xs={12} sm={6} md={3} key={m._id}>
@@ -19,6 +34,47 @@
 //           </Grid>
 //         ))}
 //       </Grid>
+      
+
+
+//       {/* Pagination */}
+//       <Stack alignItems="center" sx={{ mt: 5 }}>
+//   <Typography sx={{ mb: 1, color: "gray" }}>
+//     Page {page} of {totalPages}
+//   </Typography>
+
+//   <Pagination
+//     count={totalPages}
+//     page={page}
+//     onChange={(_, value) => setPage(value)}
+//     size="large"
+//     showFirstButton
+//     showLastButton
+//     siblingCount={1}
+//     boundaryCount={1}
+//     sx={{
+//       "& .MuiPaginationItem-root": {
+//         color: "#fff",
+//         border: "1px solid rgba(255,255,255,0.4)",
+//         borderRadius: 2,
+//         mx: 0.4,
+//         minWidth: 42,
+//         height: 42,
+//       },
+//       "& .MuiPaginationItem-root:hover": {
+//         backgroundColor: "rgba(255,255,255,0.2)",
+//       },
+//       "& .Mui-selected": {
+//         backgroundColor: "#e91e63 !important",
+//         color: "#fff",
+//         fontWeight: "bold",
+//         transform: "scale(1.1)",
+//       },
+//     }}
+//   />
+// </Stack>
+
+
 //     </Container>
 //   );
 // };
@@ -31,12 +87,18 @@ import { useMovies } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
 
 const Home = () => {
-  const { movies, page, totalPages, setPage } = useMovies();
+  const { movies, page, totalPages, setPage, loading } = useMovies();
+
+  if (loading) {
+    return (
+      <Typography sx={{ textAlign: "center", mt: 10 }}>
+        Loading movies...
+      </Typography>
+    );
+  }
 
   return (
-     <Container maxWidth="xl" sx={{ mt: 5 }}>
-
-     {/* <Container sx={{ mt: 5 }}> */}
+    <Container maxWidth="xl" sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>
         🎬 Top Movies
       </Typography>
@@ -51,12 +113,33 @@ const Home = () => {
 
       {/* Pagination */}
       <Stack alignItems="center" sx={{ mt: 5 }}>
+        <Typography sx={{ mb: 1, color: "gray" }}>
+          Page {page} of {totalPages}
+        </Typography>
+
         <Pagination
           count={totalPages}
           page={page}
           onChange={(_, value) => setPage(value)}
           size="large"
-          color="secondary"
+          showFirstButton
+          showLastButton
+          siblingCount={1}
+          boundaryCount={1}
+          sx={{
+            "& .MuiPaginationItem-root": {
+              border: "1px solid rgba(255,255,255,0.4)",
+              borderRadius: 2,
+              mx: 0.4,
+              minWidth: 42,
+              height: 42,
+            },
+            "& .Mui-selected": {
+              backgroundColor: "#e91e63 !important",
+              color: "#fff",
+              fontWeight: "bold",
+            },
+          }}
         />
       </Stack>
     </Container>
