@@ -15,7 +15,7 @@ const Search = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Load popular movies initially
+  // Load popular movies initially
 useEffect(() => {
   const loadMovies = async () => {
     try {
@@ -39,8 +39,7 @@ useEffect(() => {
   const timeout = setTimeout(async () => {
     try {
       setLoading(true);
-      // const res = await api.get(`/movies/search?query=${query}`);
-      // setMovies(res.data); 
+      
       const res = await api.get(`/movies/search?query=${query}`);
 setMovies(res.data.movies);
 

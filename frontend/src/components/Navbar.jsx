@@ -14,7 +14,7 @@ const Navbar = () => {
           to="/"
           sx={{ flexGrow: 1, textDecoration: "none", color: "#ff9800" }}
         >
-          🎬 MovieVerse
+           MovieVerse
         </Typography>
 
         <Box>

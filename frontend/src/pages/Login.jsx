@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-
 import {
   Button,
   TextField,
@@ -18,16 +17,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const submit = async () => {
-    // await login(email, password);
-  // };
   
 
   const submit = async () => {
     try {
       const success = await login(email, password);
       if (success) {
-        navigate("/"); // ✅ REDIRECT AFTER LOGIN
+        navigate("/"); 
       }
     } catch (err) {
       alert("Invalid email or password");
