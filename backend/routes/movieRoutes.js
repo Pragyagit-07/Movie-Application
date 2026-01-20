@@ -13,13 +13,27 @@ import {
 
 const router = express.Router();
 
-router.get("/", getMovies);
-router.get("/:id", getMovieById);   
+// router.get("/", getMovies);
+// router.get("/:id", getMovieById);   
 
+// router.get("/search", searchMovies);
+// router.get("/sorted", sortMovies);
+// router.post("/", protect, isAdmin, addMovie);
+// router.put("/:id", protect, isAdmin, updateMovie);
+// router.delete("/:id", protect, isAdmin, deleteMovie);
+
+router.get("/", getMovies);
+
+// 🔥 STATIC routes FIRST
 router.get("/search", searchMovies);
 router.get("/sorted", sortMovies);
+
+// 🔥 DYNAMIC route LAST
+router.get("/:id", getMovieById);
+
 router.post("/", protect, isAdmin, addMovie);
 router.put("/:id", protect, isAdmin, updateMovie);
 router.delete("/:id", protect, isAdmin, deleteMovie);
+
 
 export default router;

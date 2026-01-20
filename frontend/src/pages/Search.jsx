@@ -39,8 +39,11 @@ useEffect(() => {
   const timeout = setTimeout(async () => {
     try {
       setLoading(true);
+      // const res = await api.get(`/movies/search?query=${query}`);
+      // setMovies(res.data); 
       const res = await api.get(`/movies/search?query=${query}`);
-      setMovies(res.data); // ✅ res.data IS array
+setMovies(res.data.movies);
+
     } catch (err) {
       console.error(err);
     } finally {
@@ -105,3 +108,6 @@ useEffect(() => {
 };
 
 export default Search;
+
+
+
