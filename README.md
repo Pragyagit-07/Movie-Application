@@ -62,7 +62,7 @@ A full-stack Movie Management Application built using MERN stack, featuring auth
 │   ├── models/
 │   ├── routes/
 |   |- queue/
-|   |- scrripts/
+|   |- scripts/
 │   └── server.js
 │
 ├── frontend/
