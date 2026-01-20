@@ -15,33 +15,44 @@ const Search = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Load popular movies initially
-  useEffect(() => {
-    const loadMovies = async () => {
+  // ✅ Load popular movies initially
+useEffect(() => {
+  const loadMovies = async () => {
+    try {
       setLoading(true);
-      // const res = await api.get("/movies");
-      // setMovies(res.data.movies);
-      const res = await api.get(`/movies/search?query=${query}`);
+      const res = await api.get("/movies"); 
       setMovies(res.data.movies);
-
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
-    };
-    loadMovies();
-  }, []);
+    }
+  };
 
-  // 🔹 Search with debounce
+  loadMovies();
+}, []);
+ 
+
   useEffect(() => {
-    if (!query) return;
+  if (!query.trim()) return;
 
-    const timeout = setTimeout(async () => {
+  const timeout = setTimeout(async () => {
+    try {
       setLoading(true);
       const res = await api.get(`/movies/search?query=${query}`);
-      setMovies(res.data);
+      setMovies(res.data); // ✅ res.data IS array
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
-    }, 500);
+    }
+  }, 500);
 
-    return () => clearTimeout(timeout);
-  }, [query]);
+  return () => clearTimeout(timeout);
+}, [query]);
+
+
+
 
   return (
     <Container sx={{ mt: 5 }}>

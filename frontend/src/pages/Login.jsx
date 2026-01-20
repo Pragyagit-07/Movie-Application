@@ -1,6 +1,4 @@
-
-
-
+import { useNavigate } from "react-router-dom";
 
 import {
   Button,
@@ -15,12 +13,27 @@ import { motion } from "framer-motion";
 
 const Login = () => {
   const { login } = useAuth();
+    const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // const submit = async () => {
+    // await login(email, password);
+  // };
+  
+
   const submit = async () => {
-    await login(email, password);
+    try {
+      const success = await login(email, password);
+      if (success) {
+        navigate("/"); // ✅ REDIRECT AFTER LOGIN
+      }
+    } catch (err) {
+      alert("Invalid email or password");
+    }
   };
+
 
   return (
     <Box
