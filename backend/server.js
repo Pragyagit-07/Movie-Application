@@ -22,7 +22,15 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+        "http://localhost:5173",
+"https://movie-application-blush-eta.vercel.app"
+  ],
+  credentials: true
+}
+
+));
 app.use(express.json());
 
 // DB
