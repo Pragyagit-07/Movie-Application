@@ -24,7 +24,7 @@ app.use(limiter);
 // Middleware
 app.use(cors({
   origin: [
-        "http://localhost:5173",
+        "http://localhost:3000",
         "http://192.168.1.3:3000",
 "https://movie-application-five.vercel.app",
   ],
