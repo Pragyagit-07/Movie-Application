@@ -25,7 +25,8 @@ app.use(limiter);
 app.use(cors({
   origin: [
         "http://localhost:5173",
-"https://movie-application-blush-eta.vercel.app"
+        "http://192.168.1.3:3000",
+"https://movie-application-five.vercel.app",
   ],
   credentials: true
 }
