@@ -20,7 +20,7 @@ useEffect(() => {
   const loadMovies = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/movies"); 
+      const res = await api.get("/api/movies"); 
       setMovies(res.data.movies);
     } catch (err) {
       console.error(err);
@@ -40,7 +40,7 @@ useEffect(() => {
     try {
       setLoading(true);
       
-      const res = await api.get(`/movies/search?query=${query}`);
+      const res = await api.get(`/api/movies/search?query=${query}`);
 setMovies(res.data.movies);
 
     } catch (err) {
