@@ -10,10 +10,15 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await api.post("/auth/login", {
-        email,
-        password,
-      });
+      // const res = await api.post("/auth/login", {
+        // email,
+        // password,
+      // });
+      const res = await api.post("/api/auth/login", {
+  email,
+  password,
+});
+
 
       const userData = { role: res.data.role };
 

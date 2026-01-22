@@ -11,11 +11,18 @@ export const MovieProvider = ({ children }) => {
 
   const fetchMovies = async (pageNumber = 1) => {
     setLoading(true);
-    const res = await api.get(`/movies?page=${pageNumber}`);
+    try {
+    // const res = await api.get(`/movies?page=${pageNumber}`);
+    const res = await api.get(`/api/movies?page=${pageNumber}`);
+
     setMovies(res.data.movies);
     setPage(res.data.currentPage);
     setTotalPages(res.data.totalPages);
+  } catch (err) {
+    console.error("failed to reach movies", err);
+  } finally{
     setLoading(false);
+  }
   };
 
   useEffect(() => {
