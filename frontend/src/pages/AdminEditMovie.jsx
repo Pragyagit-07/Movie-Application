@@ -21,7 +21,7 @@ const AdminEditMovie = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await api.get(`/movies/${id}`);
+        const res = await api.get(`/api/movies/${id}`);
         setMovie(res.data);
       } catch (err) {
         alert("Failed to load movie");
@@ -35,7 +35,7 @@ const AdminEditMovie = () => {
 
   const update = async () => {
     try {
-      await api.put(`/movies/${id}`, movie);
+      await api.put(`/api/movies/${id}`, movie);
       alert("Movie updated");
       navigate("/");
     } catch (err) {
@@ -47,7 +47,7 @@ const AdminEditMovie = () => {
     if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
     try {
-      await api.delete(`/movies/${id}`);
+      await api.delete(`/api/movies/${id}`);
       alert("Movie deleted");
       navigate("/");
     } catch (err) {

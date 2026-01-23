@@ -21,7 +21,7 @@ const AdminAddMovie = () => {
   });
 
   const submit = async () => {
-    await api.post("/movies", movie);
+    await api.post("/api/movies", movie);
     alert("Movie added successfully 🎉");
   };
 

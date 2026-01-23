@@ -12,7 +12,7 @@ export const MovieProvider = ({ children }) => {
   const fetchMovies = async (pageNumber = 1) => {
     setLoading(true);
     try {
-    // const res = await api.get(`/movies?page=${pageNumber}`);
+    
     const res = await api.get(`/api/movies?page=${pageNumber}`);
 
     setMovies(res.data.movies);
