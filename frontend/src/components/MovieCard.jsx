@@ -1,4 +1,60 @@
-// import { Card, CardMedia, CardContent, Typography, Box, IconButton } from "@mui/material";
+// // import { Card, CardMedia, CardContent, Typography, Box, IconButton } from "@mui/material";
+// // import { Edit, Delete } from "@mui/icons-material";
+// // import { motion } from "framer-motion";
+// // import { useAuth } from "../context/AuthContext";
+// // import { useNavigate } from "react-router-dom";
+// // import api from "../api/axios";
+
+// // const MovieCard = ({ movie }) => {
+// //   const { user } = useAuth();
+// //   const navigate = useNavigate();
+
+// //   const deleteMovie = async () => {
+// //     if (window.confirm("Delete this movie?")) {
+// //       await api.delete(`/api/movies/${movie._id}`);
+// //       window.location.reload();
+// //     }
+// //   };
+
+// //   return (
+// //     <motion.div whileHover={{ scale: 1.05 }}>
+// //       <Card sx={{ borderRadius: 4, position: "relative" }}>
+// //         <CardMedia
+// //           component="img"
+// //           height="300"
+// //           image={movie.poster}
+// //         />
+
+// //         {user?.role === "admin" && (
+// //           <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+// //             <IconButton onClick={() => navigate(`/api/admin/edit/${movie._id}`)}>
+// //               <Edit sx={{ color: "#fff" }} />
+// //             </IconButton>
+// //             <IconButton onClick={deleteMovie}>
+// //               <Delete sx={{ color: "#ff5252" }} />
+// //             </IconButton>
+// //           </Box>
+// //         )}
+
+// //         <CardContent>
+// //           <Typography variant="h6">{movie.title}</Typography>
+// //           <Typography variant="body2">⭐ {movie.rating}</Typography>
+// //         </CardContent>
+// //       </Card>
+// //     </motion.div>
+// //   );
+// // };
+
+// // export default MovieCard;
+
+
+// import {
+//   Card,
+//   CardContent,
+//   Typography,
+//   Box,
+//   IconButton,
+// } from "@mui/material";
 // import { Edit, Delete } from "@mui/icons-material";
 // import { motion } from "framer-motion";
 // import { useAuth } from "../context/AuthContext";
@@ -12,33 +68,96 @@
 //   const deleteMovie = async () => {
 //     if (window.confirm("Delete this movie?")) {
 //       await api.delete(`/api/movies/${movie._id}`);
-//       window.location.reload();
+//       // better UX: no reload, backend pagination will refetch
 //     }
 //   };
 
 //   return (
-//     <motion.div whileHover={{ scale: 1.05 }}>
-//       <Card sx={{ borderRadius: 4, position: "relative" }}>
-//         <CardMedia
-//           component="img"
-//           height="300"
-//           image={movie.poster}
-//         />
+//     <motion.div whileHover={{ scale: 1.04 }}>
+//       <Card
+//         sx={{
+//           borderRadius: 4,
+//           position: "relative",
+//           overflow: "hidden",
+//           height: "100%",
+//         }}
+//       >
+//         {/* FIXED IMAGE RATIO */}
+//         <Box
+//           sx={{
+//             position: "relative",
+//             width: "100%",
+//             paddingTop: "150%", // 2:3 poster ratio
+//             overflow: "hidden",
+//           }}
+//         >
+//           <Box
+//             component="img"
+//             src={movie.poster}
+//             alt={movie.title}
+//             sx={{
+//               position: "absolute",
+//               inset: 0,
+//               width: "100%",
+//               height: "100%",
+//               objectFit: "cover",
+//             }}
+//           />
 
-//         {user?.role === "admin" && (
-//           <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-//             <IconButton onClick={() => navigate(`/api/admin/edit/${movie._id}`)}>
-//               <Edit sx={{ color: "#fff" }} />
-//             </IconButton>
-//             <IconButton onClick={deleteMovie}>
-//               <Delete sx={{ color: "#ff5252" }} />
-//             </IconButton>
-//           </Box>
-//         )}
+//           {/* ADMIN ACTIONS (HOVER ONLY) */}
+//           {user?.role === "admin" && (
+//             <Box
+//               sx={{
+//                 position: "absolute",
+//                 top: 8,
+//                 right: 8,
+//                 display: "flex",
+//                 gap: 1,
+//                 opacity: 0,
+//                 transition: "opacity 0.3s ease",
+//                 ".MuiCard-root:hover &": {
+//                   opacity: 1,
+//                 },
+//               }}
+//             >
+//               <IconButton
+//                 size="small"
+//                 onClick={() => navigate(`/admin/edit/${movie._id}`)}
+//                 sx={{
+//                   backgroundColor: "rgba(0,0,0,0.6)",
+//                   "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+//                 }}
+//               >
+//                 <Edit sx={{ color: "#fff" }} />
+//               </IconButton>
+
+//               <IconButton
+//                 size="small"
+//                 onClick={deleteMovie}
+//                 sx={{
+//                   backgroundColor: "rgba(0,0,0,0.6)",
+//                   "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+//                 }}
+//               >
+//                 <Delete sx={{ color: "#ff5252" }} />
+//               </IconButton>
+//             </Box>
+//           )}
+//         </Box>
 
 //         <CardContent>
-//           <Typography variant="h6">{movie.title}</Typography>
-//           <Typography variant="body2">⭐ {movie.rating}</Typography>
+//           <Typography
+//             variant="h6"
+//             noWrap
+//             title={movie.title}
+//             sx={{ fontWeight: "bold" }}
+//           >
+//             {movie.title}
+//           </Typography>
+
+//           <Typography variant="body2" sx={{ mt: 0.5 }}>
+//             ⭐ {movie.rating}
+//           </Typography>
 //         </CardContent>
 //       </Card>
 //     </motion.div>
@@ -46,6 +165,7 @@
 // };
 
 // export default MovieCard;
+
 
 
 import {
@@ -61,6 +181,9 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
+const POSTER_HEIGHT = 360; // 🔒 same poster height everywhere
+const CARD_HEIGHT = 460;   // 🔒 same card height everywhere
+
 const MovieCard = ({ movie }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -68,7 +191,6 @@ const MovieCard = ({ movie }) => {
   const deleteMovie = async () => {
     if (window.confirm("Delete this movie?")) {
       await api.delete(`/api/movies/${movie._id}`);
-      // better UX: no reload, backend pagination will refetch
     }
   };
 
@@ -76,35 +198,38 @@ const MovieCard = ({ movie }) => {
     <motion.div whileHover={{ scale: 1.04 }}>
       <Card
         sx={{
+          height: CARD_HEIGHT,
           borderRadius: 4,
-          position: "relative",
           overflow: "hidden",
-          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
         }}
       >
-        {/* FIXED IMAGE RATIO */}
+        {/* 🔒 FIXED IMAGE CONTAINER */}
         <Box
           sx={{
-            position: "relative",
+            height: POSTER_HEIGHT,
             width: "100%",
-            paddingTop: "150%", // 2:3 poster ratio
             overflow: "hidden",
+            position: "relative",
+            flexShrink: 0,
           }}
         >
           <Box
             component="img"
             src={movie.poster}
             alt={movie.title}
+            loading="lazy"
             sx={{
-              position: "absolute",
-              inset: 0,
               width: "100%",
               height: "100%",
-              objectFit: "cover",
+              objectFit: "cover", // 🔥 keeps same resolution look
+              display: "block",
             }}
           />
 
-          {/* ADMIN ACTIONS (HOVER ONLY) */}
+          {/* ADMIN BUTTONS */}
           {user?.role === "admin" && (
             <Box
               sx={{
@@ -124,28 +249,36 @@ const MovieCard = ({ movie }) => {
                 size="small"
                 onClick={() => navigate(`/admin/edit/${movie._id}`)}
                 sx={{
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+                  backgroundColor: "rgba(0,0,0,0.65)",
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.85)" },
                 }}
               >
-                <Edit sx={{ color: "#fff" }} />
+                <Edit sx={{ color: "#fff", fontSize: 18 }} />
               </IconButton>
 
               <IconButton
                 size="small"
                 onClick={deleteMovie}
                 sx={{
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+                  backgroundColor: "rgba(0,0,0,0.65)",
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.85)" },
                 }}
               >
-                <Delete sx={{ color: "#ff5252" }} />
+                <Delete sx={{ color: "#ff5252", fontSize: 18 }} />
               </IconButton>
             </Box>
           )}
         </Box>
 
-        <CardContent>
+        {/* 🔒 FIXED CONTENT AREA */}
+        <CardContent
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography
             variant="h6"
             noWrap
@@ -155,7 +288,7 @@ const MovieCard = ({ movie }) => {
             {movie.title}
           </Typography>
 
-          <Typography variant="body2" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" sx={{ mt: 1 }}>
             ⭐ {movie.rating}
           </Typography>
         </CardContent>
